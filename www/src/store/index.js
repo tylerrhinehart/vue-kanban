@@ -1,6 +1,7 @@
 import axios from 'axios'
 import vue from 'vue'
 import vuex from 'vuex'
+import router from '../router'
 
 let api = axios.create({
   baseURL: 'http://localhost:3000/api/',
@@ -19,6 +20,7 @@ var store = new vuex.Store({
   state: {
     boards: [{ name: 'This is total rubbish' }],
     activeBoard: {},
+    activeLists: [],
     error: {},
     user: {},
     loggedIn: false,
@@ -35,7 +37,11 @@ var store = new vuex.Store({
       console.log(activeBoard)
     },
     setLists(state, lists) {
-      state.activeBoard.lists = lists
+      state.activeLists = lists
+    },
+    setTasks(state, obj){
+      var list = state.activeLists
+      list.tasks = obj.tasks
     },
     login(state, user) {
       state.user = user.data.data
@@ -88,7 +94,36 @@ var store = new vuex.Store({
     },
     getLists({ commit, dispatch }, id) {
       api('/boards/' + id + '/lists').then((lists) => {
-        commit('setLists', lists)
+        commit('setLists', lists).then(lists => {
+          lists.forEach(list => {
+            var listId = list._id
+            console.log(list)
+            dispatch('getTasks', listId)
+          })
+        })
+      })
+    },
+    getTasks({ commit, dispatch }, id) {
+      api('/lists/' + id + '/tasks').then((tasks) => {
+        commit('setTasks', {tasks: tasks, listId: id}).then(tasks => {
+          tasks.forEach(task => {
+            var taskId = task._id
+            console.log(task)
+            dispatch('getComments', taskId)
+          })
+        })
+      })
+    },
+    getAuth() {
+      auth('/authenticate').then( res => {
+        if(!res.data.data) {
+          return router.push('/')
+        }
+        commit('login', res)
+        // state.user = res.data.data
+        router.push('/boards')
+      }).catch(err => {
+        router.push('/')
       })
     },
     signup({ commit, dispatch }, user) {

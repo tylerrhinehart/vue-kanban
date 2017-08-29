@@ -24,8 +24,11 @@
     computed: {
       loggedIn() {
         return this.$store.state.loggedIn
-      }
-    }
+      },
+    },
+    // mounted() {
+    //   this.$store.dispatch('getAuth')
+    // }
   }
 
 </script>
@@ -39,6 +42,7 @@
     color: #2c3e50;
     margin-top: 60px;
   }
+
   #id {
     margin-top: 20vh;
   }
