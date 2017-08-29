@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <error></error> -->
     <Navbar></Navbar>
-    <div v-if="loggedIn">
+    <div id="id" v-if="loggedIn">
       <router-view></router-view>
     </div>
     <div v-else>
@@ -38,5 +38,8 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  #id {
+    margin-top: 20vh;
   }
 </style>

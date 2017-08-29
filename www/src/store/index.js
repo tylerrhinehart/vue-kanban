@@ -30,6 +30,13 @@ var store = new vuex.Store({
     handleError(state, err) {
       state.error = err
     },
+    setActiveBoard(state, board) {
+      state.activeBoard = board
+      console.log(activeBoard)
+    },
+    setLists(state, lists) {
+      state.activeBoard.lists = lists
+    },
     login(state, user) {
       state.user = user.data.data
       state.loggedIn = true
@@ -54,6 +61,7 @@ var store = new vuex.Store({
     getBoard({ commit, dispatch }, id) {
       api('boards/' + id)
         .then(res => {
+          dispatch('getLists', id)
           commit('setActiveBoard', res.data.data)
         })
         .catch(err => {
@@ -61,7 +69,6 @@ var store = new vuex.Store({
         })
     },
     createBoard({ commit, dispatch }, board) {
-      debugger
       api.post('boards/', board)
         .then(res => {
           dispatch('getBoards')
@@ -78,6 +85,11 @@ var store = new vuex.Store({
         .catch(err => {
           commit('handleError', err)
         })
+    },
+    getLists({ commit, dispatch }, id) {
+      api('/boards/' + id + '/lists').then((lists) => {
+        commit('setLists', lists)
+      })
     },
     signup({ commit, dispatch }, user) {
       auth.post('/register', user).then((user) => {
