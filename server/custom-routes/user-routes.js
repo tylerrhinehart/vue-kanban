@@ -1,12 +1,15 @@
 let Boards = require('../models/board')
+let Lists = require('../models/list')
+let Tasks = require('../models/task')
+let Comments = require('../models/comment')
 
 module.exports = {
   userBoards: {
     path: '/userboards',
     reqType: 'get',
-    method(req, res, next){
+    method(req, res, next) {
       let action = 'Find User Boards'
-      Boards.find({creatorId: req.session.uid})
+      Boards.find({ creatorId: req.session.uid })
         .then(boards => {
           res.send(handleResponse(action, boards))
         }).catch(error => {
@@ -17,8 +20,8 @@ module.exports = {
   sharedBoards: {
     path: '/sharedBoards',
     reqType: 'get',
-    method(req, res, next){
-      Boards.find({collaborators: { $in: req.session.uid}})
+    method(req, res, next) {
+      Boards.find({ collaborators: { $in: req.session.uid } })
         .then(boards => {
           res.send(handleResponse(action, boards))
         }).catch(error => {
@@ -30,12 +33,12 @@ module.exports = {
 
 
 function handleResponse(action, data, error) {
-    var response = {
-      action: action,
-      data: data
-    }
-    if (error) {
-      response.error = error
-    }
-    return response
+  var response = {
+    action: action,
+    data: data
   }
+  if (error) {
+    response.error = error
+  }
+  return response
+}
