@@ -10,7 +10,7 @@
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                         </button>
-                    <a class="navbar-brand" href="#">Tyler Rhinehart- Vue Music Checkpoint</a>
+                    <a class="navbar-brand" href="#">Tyler & Austin- Vue Kanban</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <form v-show="!signedIn" class="navbar-form navbar-right" @submit.prevent="login">
