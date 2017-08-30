@@ -93,8 +93,9 @@ var store = new vuex.Store({
         })
     },
     addList({ commit, dispatch }, list) {
-      api.post('/boards/' + list.boardId + '/lists', list).then(list => {
-        dispatch('getLists', list.boardId)
+      var id = list.boardId
+      api.post('/boards/' + id + '/lists', list).then(list => {
+        dispatch('getLists', id)
       })
     },
     getLists({ commit, dispatch }, id) {
@@ -115,7 +116,7 @@ var store = new vuex.Store({
       var tempListArr = []
       // console.log(lists)
       lists.data.data.forEach((list) => {
-        console.log(list)
+        // console.log(list)
         tempListArr.push(list)
       })
       commit('setLists', tempListArr)

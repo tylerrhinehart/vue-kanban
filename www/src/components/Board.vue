@@ -11,8 +11,28 @@
     <div style="display: inline-block" v-for="list in lists">
       <md-card>
         <md-card-header>
-          <div class="md-title">{{list.name}}</div>
-          <div class="md-subhead">Description goes here</div>
+          <md-card-header-text>
+            <div class="md-title">{{list.name}}</div>
+            <div class="md-subhead">Description goes here</div>
+          </md-card-header-text>
+
+          <md-menu md-size="4" md-direction="top right">
+            <md-button class="md-icon-button" md-menu-trigger>
+              <md-icon>more_vert</md-icon>
+            </md-button>
+
+            <md-menu-content>
+              <md-menu-item>
+                <span>Add Task</span>
+                <md-icon>add_circle</md-icon>
+              </md-menu-item>
+
+              <md-menu-item>
+                <span>Change name</span>
+                <md-icon>message</md-icon>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
         </md-card-header>
         <md-card-content>
           Tasks will eventually go here
@@ -46,6 +66,7 @@
           boardId: this.$route.params.id
         }
         this.$store.dispatch('addList', list)
+        this.listName= ''
       }
     },
     mounted() {
