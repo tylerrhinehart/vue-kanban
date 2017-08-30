@@ -92,16 +92,33 @@ var store = new vuex.Store({
           commit('handleError', err)
         })
     },
+    addList({ commit, dispatch }, list) {
+      api.post('/boards/' + list.boardId + '/lists', list).then(list => {
+        dispatch('getLists', list.boardId)
+      })
+    },
     getLists({ commit, dispatch }, id) {
       api('/boards/' + id + '/lists').then((lists) => {
-        commit('setLists', lists).then(lists => {
-          lists.forEach(list => {
-            var listId = list._id
-            console.log(list)
-            dispatch('getTasks', listId)
-          })
-        })
+        dispatch('attachTasks', lists)
+        console.log(lists)
+        // commit('setLists', lists).then(lists => {
+        // lists.forEach(list => {
+        //   debugger
+        //   var listId = list._id
+        //   console.log(list)
+        //   dispatch('getTasks', listId)
+        // })
+        // })
       })
+    },
+    attachTasks({ commit, dispatch }, lists) {
+      var tempListArr = []
+      // console.log(lists)
+      lists.data.data.forEach((list) => {
+        console.log(list)
+        tempListArr.push(list)
+      })
+      commit('setLists', tempListArr)
     },
     getTasks({ commit, dispatch }, id) {
       api('/lists/' + id + '/tasks').then((tasks) => {
