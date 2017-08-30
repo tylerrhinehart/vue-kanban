@@ -3,7 +3,11 @@
     <button @click="openDialog('dialog1')">New Board</button>
     <ul>
       <li v-for="board in boards">
-        <router-link :to="'/boards/'+board._id">{{board.name}}</router-link> <span @click="removeBoard(board)">x</span></li>
+        <router-link :to="'/boards/'+board._id">{{board.name}}</router-link> <span @click="removeBoard(board)">x</span>
+        <md-button @click="removeBoard(board._id)">
+          <md-icon>remove_circle</md-icon>
+        </md-button>
+      </li>
     </ul>
     <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
       <md-dialog-title>Create New Account</md-dialog-title>
@@ -52,8 +56,8 @@
           description: 'blarg'
         })
       },
-      removeBoard(board) {
-        this.$store.dispatch('removeBoard', board)
+      removeBoard(id) {
+        this.$store.dispatch('removeBoard', id)
       },
       openDialog(ref) {
         this.$refs[ref].open();

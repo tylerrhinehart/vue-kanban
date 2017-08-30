@@ -109,10 +109,10 @@ var store = new vuex.Store({
     },
     //Remove board
     //TODO
-    removeBoard({ commit, dispatch }, board) {
-      api.delete('boards/' + board._id)
+    removeBoard({ commit, dispatch }, id) {
+      api.delete('boards/' + id)
         .then(res => {
-          this.getBoards()
+          dispatch('getBoards')
         })
         .catch(err => {
           commit('handleError', err)
