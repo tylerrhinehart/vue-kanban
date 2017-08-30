@@ -35,6 +35,7 @@
     },
     mounted() {
       this.$store.dispatch('getBoards')
+      this.$store.dispatch('clearBoard')
     },
     computed: {
       boards() {

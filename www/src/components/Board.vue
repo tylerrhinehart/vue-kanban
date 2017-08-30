@@ -9,7 +9,8 @@
       <md-button class="md-primary" type="button" @click="addList">Add New List</md-button>
     </form>
     <div style="display: inline-block" v-for="list in lists">
-      <md-card>
+      <List :list="list"></List>
+      <!-- <md-card>
         <md-card-header>
           <md-card-header-text>
             <div class="md-title">{{list.name}}</div>
@@ -37,7 +38,7 @@
         <md-card-content>
           Tasks will eventually go here
         </md-card-content>
-      </md-card>
+      </md-card> -->
     </div>
     <!-- <md-list v-for="list in lists">
       <md-list-item>
@@ -51,12 +52,16 @@
 </template>
 
 <script>
+  import List from './List'  
   export default {
     name: 'board',
     data() {
       return {
         listName: ''
       }
+    },
+    components: {
+      List
     },
     methods: {
       addList() {
@@ -66,11 +71,14 @@
           boardId: this.$route.params.id
         }
         this.$store.dispatch('addList', list)
-        this.listName= ''
+        this.listName = ''
+      }, 
+      removeList(){
+        this.$store.dispatch('removeList', this.list.listId)
       }
     },
     mounted() {
-      this.$root.$store.dispatch('getBoard', this.$route.params.id)
+      this.$store.dispatch('getBoard', this.$route.params.id)
     },
     computed: {
       board() {
