@@ -18,7 +18,7 @@ vue.use(vuex)
 
 var store = new vuex.Store({
   state: {
-    boards: [{ name: 'This is total rubbish' }],
+    boards: [],
     activeBoard: {},
     activeLists: [],
     error: {},
@@ -39,7 +39,7 @@ var store = new vuex.Store({
     setLists(state, lists) {
       state.activeLists = lists
     },
-    setTasks(state, obj){
+    setTasks(state, obj) {
       var list = state.activeLists
       list.tasks = obj.tasks
     },
@@ -56,7 +56,7 @@ var store = new vuex.Store({
     //when writing your auth routes (login, logout, register) be sure to use auth instead of api for the posts
 
     getBoards({ commit, dispatch }) {
-      api('boards')
+      api('userboards')
         .then(res => {
           commit('setBoards', res.data.data)
         })
@@ -105,7 +105,7 @@ var store = new vuex.Store({
     },
     getTasks({ commit, dispatch }, id) {
       api('/lists/' + id + '/tasks').then((tasks) => {
-        commit('setTasks', {tasks: tasks, listId: id}).then(tasks => {
+        commit('setTasks', { tasks: tasks, listId: id }).then(tasks => {
           tasks.forEach(task => {
             var taskId = task._id
             console.log(task)
@@ -114,14 +114,14 @@ var store = new vuex.Store({
         })
       })
     },
-    getAuth() {
-      auth('/authenticate').then( res => {
-        if(!res.data.data) {
+    getAuth({ commit, dispatch }) {
+      auth('/authenticate').then(res => {
+        if (!res.data.data) {
           return router.push('/')
         }
         commit('login', res)
         // state.user = res.data.data
-        router.push('/boards')
+        // router.push('/boards')
       }).catch(err => {
         router.push('/')
       })
@@ -129,16 +129,19 @@ var store = new vuex.Store({
     signup({ commit, dispatch }, user) {
       auth.post('/register', user).then((user) => {
         commit('login', user)
+        router.push('/boards')
       })
     },
     login({ commit, dispatch }, user) {
       auth.post('/login', user).then((user) => {
         commit('login', user)
+        router.push('/boards')
       })
     },
     logout({ commit, dispatch }) {
       auth.delete('/logout').then((user) => {
         commit('logout')
+        router.push('/')
       })
 
     },

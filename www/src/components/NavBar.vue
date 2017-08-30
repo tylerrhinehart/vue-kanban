@@ -13,7 +13,7 @@
                     <a class="navbar-brand" href="#">Tyler Rhinehart- Vue Music Checkpoint</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form v-show="!loggedIn" class="navbar-form navbar-right" @submit.prevent="login">
+                    <form v-show="!signedIn" class="navbar-form navbar-right" @submit.prevent="login">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="email" v-model="email" required>
                             <input type="password" class="form-control" placeholder="password" v-model="password" required>
@@ -21,7 +21,7 @@
                         <button type="submit" class="btn btn-default">Login</button>
                         <button type="button" class="btn btn-default" @click="openDialog('dialog1')">Signup</button>
                     </form>
-                    <div v-show="loggedIn" class="nav navbar navbar-right">
+                    <div v-show="signedIn" class="nav navbar navbar-right">
                         <h4 style="display: inline-block">Hello, {{user.name}}</h4>
                         <button type="button" class="btn btn-default" @click="logout">Logout</button>
                     </div>
@@ -118,6 +118,10 @@
         computed: {
             user() {
                 return this.$store.state.user
+            },
+            signedIn() {
+                this.loggedIn = this.$store.state.loggedIn
+                return this.$store.state.loggedIn
             }
         }
     }

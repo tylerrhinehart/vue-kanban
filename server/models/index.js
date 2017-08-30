@@ -17,7 +17,6 @@ Object.keys(models).forEach((k) => {
 		if(customRoutes){
 			Object.keys(customRoutes).forEach(k => {
 				let route = customRoutes[k]
-				console.log(route)
 				api.route(route.path)[route.reqType](route.method)
 			})
 		}

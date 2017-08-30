@@ -2,10 +2,10 @@
   <div id="app">
     <!-- <error></error> -->
     <Navbar></Navbar>
-    <div id="id" v-if="loggedIn">
+    <div id="id">
       <router-view></router-view>
     </div>
-    <div v-else>
+    <div v-show="!loggedIn">
       <h3>Sign in to see your boards</h3>
     </div>
   </div>
@@ -26,9 +26,9 @@
         return this.$store.state.loggedIn
       },
     },
-    // mounted() {
-    //   this.$store.dispatch('getAuth')
-    // }
+    mounted() {
+      this.$store.dispatch('getAuth')
+    }
   }
 
 </script>
