@@ -27,7 +27,7 @@
             </md-card-header>
             <md-card-content>
                 Tasks will eventually go here
-                <md-list v-for="task in list.task.data.data">
+                <md-list v-for="task in tasks">
                     <task :task="task"></task>
                 </md-list>
             </md-card-content>
@@ -62,10 +62,11 @@
         data() {
             return {
                 name: '',
-                description: ''
+                description: '',
+                index: 0
             }
         },
-        components:{
+        components: {
             Task
         },
         props: ['list'],
@@ -92,6 +93,14 @@
                 this.$store.dispatch('createTask', task)
                 this.name = ''
 
+            }
+        },
+        mounted() {
+            this.$store.dispatch('getTasks', this.list._id)
+        },
+        computed: {
+            tasks(){
+                return this.$store.state.tasks[this.list._id]
             }
         }
 

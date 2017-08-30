@@ -10,49 +10,12 @@
     </form>
     <div style="display: inline-block" v-for="list in lists">
       <List :list="list"></List>
-      <!-- <md-card>
-        <md-card-header>
-          <md-card-header-text>
-            <div class="md-title">{{list.name}}</div>
-            <div class="md-subhead">Description goes here</div>
-          </md-card-header-text>
-
-          <md-menu md-size="4" md-direction="top right">
-            <md-button class="md-icon-button" md-menu-trigger>
-              <md-icon>more_vert</md-icon>
-            </md-button>
-
-            <md-menu-content>
-              <md-menu-item>
-                <span>Add Task</span>
-                <md-icon>add_circle</md-icon>
-              </md-menu-item>
-
-              <md-menu-item>
-                <span>Change name</span>
-                <md-icon>message</md-icon>
-              </md-menu-item>
-            </md-menu-content>
-          </md-menu>
-        </md-card-header>
-        <md-card-content>
-          Tasks will eventually go here
-        </md-card-content>
-      </md-card> -->
     </div>
-    <!-- <md-list v-for="list in lists">
-      <md-list-item>
-        <md-button class="md-icon-button md-list-action">
-          <md-icon>remove_circle</md-icon>
-        </md-button>
-        <span>{{list.name}}</span>
-      </md-list-item>
-    </md-list> -->
   </div>
 </template>
 
 <script>
-  import List from './List'  
+  import List from './List'
   export default {
     name: 'board',
     data() {
@@ -72,13 +35,15 @@
         }
         this.$store.dispatch('addList', list)
         this.listName = ''
-      }, 
-      removeList(){
+      },
+      removeList() {
         this.$store.dispatch('removeList', this.list.listId)
       }
     },
     mounted() {
       this.$store.dispatch('getBoard', this.$route.params.id)
+      this.$store.dispatch('getLists', this.$route.params.id)
+      //getlists
     },
     computed: {
       board() {

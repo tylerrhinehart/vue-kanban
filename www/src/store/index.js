@@ -21,6 +21,7 @@ var store = new vuex.Store({
     boards: [],
     activeBoard: {},
     activeLists: [],
+    tasks: {},
     error: {},
     user: {},
     loggedIn: false,
@@ -35,13 +36,27 @@ var store = new vuex.Store({
     setActiveBoard(state, board) {
       state.activeBoard = board
     },
-    // setLists(state, lists) {
-    //   state.activeLists = lists
-    // },
-    setTasks(state, list) {
-      state.activeLists.push(list)
+    setLists(state, lists) {
+      state.activeLists = lists
     },
-    clearLists(state){
+    removeTask(state, task) {
+      debugger
+      var list = state.activeLists.find((list) => {
+        if (list._id == task.data.data.listId) {
+          return list
+        }
+      })
+      list.task.data.data.splice(list.task.data.data.indexOf(task), 1)
+      console.log(list)
+      // state.activeLists[listIndex].tasks.data.data.splice(findIndex(task), 1)
+
+    },
+    setTasks(state, tasks) {
+      console.log(tasks)
+      vue.set(state.tasks, tasks.listId, tasks.data)
+      // state.tasks[tasks.listId] = tasks.data
+    },
+    clearLists(state) {
       state.activeLists = []
     },
     clearBoard(state) {
@@ -76,7 +91,7 @@ var store = new vuex.Store({
     getBoard({ commit, dispatch }, id) {
       api('boards/' + id)
         .then(res => {
-          dispatch('getLists', id)
+          //dispatch('getLists', id)
           commit('setActiveBoard', res.data.data)
         })
         .catch(err => {
@@ -111,12 +126,16 @@ var store = new vuex.Store({
         dispatch('getLists', id)
       })
     },
+    removeList({ commit, dispatch }, listId) {
+      api.delete()
+    },
     //Gets all lists for with active board's Id
     getLists({ commit, dispatch }, id) {
-      api('/boards/' + id + '/lists').then((lists) => {
-        dispatch('getTasks', lists)
-        // commit('setLists', lists).then(lists => {
-        // lists.forEach(list => {
+      api('/boards/' + id + '/lists').then(lists => {
+        //dispatch('getTasks', lists)
+        commit('setLists', lists.data.data)
+        //   .then(lists => {
+        //   lists.forEach(list => {
         //   debugger
         //   var listId = list._id
         //   console.log(list)
@@ -126,28 +145,22 @@ var store = new vuex.Store({
       })
     },
     //Takes each list and gets task for it and pushes them to an array on the list
-    getTasks({ commit, dispatch }, lists) {
-      commit('clearLists')
-      lists.data.data.forEach((list) => {
-        var id = list._id
-        api('/lists/' + id + '/tasks').then((tasks) => {
-          list.task = tasks
-          commit('setTasks', list)
-          //   .then(tasks => {
-          //     tasks.forEach(task => {
-          //       var taskId = task._id
-          //       console.log(task)
-          //       dispatch('getComments', taskId)
-          //     })
-          //   })
+    getTasks({ commit, dispatch }, listId) {
+      api("/lists/" + listId + "/tasks")
+        .then(tasks => {
+          tasks.data.listId = listId
+          commit('setTasks', tasks.data)
         })
+    },
+    removeTask({ commit, dispatch }, id) {
+      api.delete('tasks/' + id).then((task) => {
+        dispatch('getTasks', task.data.data.listId)
       })
     },
-    createTask({commit,dispatch}, task){
-      console.log(task)
-      var boardId = task.boardId
-      api.post('/lists/' + task.listId + '/tasks', task).then(task=>{
-        dispatch('getLists', boardId)
+    createTask({ commit, dispatch }, task) {
+      var listId = task.listId
+      api.post('/lists/' + task.listId + '/tasks', task).then(task => {
+        dispatch('getTasks', listId)
       })
     },
     clearBoard({ commit, dispatch }) {
