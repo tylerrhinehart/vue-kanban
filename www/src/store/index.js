@@ -52,7 +52,6 @@ var store = new vuex.Store({
 
     },
     setTasks(state, tasks) {
-      console.log(tasks)
       vue.set(state.tasks, tasks.listId, tasks.data)
       // state.tasks[tasks.listId] = tasks.data
     },
@@ -127,21 +126,14 @@ var store = new vuex.Store({
       })
     },
     removeList({ commit, dispatch }, listId) {
-      api.delete()
+      api.delete('lists/' + listId).then((list) => {
+        dispatch('getLists', list.data.data.boardId)
+      })
     },
     //Gets all lists for with active board's Id
     getLists({ commit, dispatch }, id) {
       api('/boards/' + id + '/lists').then(lists => {
-        //dispatch('getTasks', lists)
         commit('setLists', lists.data.data)
-        //   .then(lists => {
-        //   lists.forEach(list => {
-        //   debugger
-        //   var listId = list._id
-        //   console.log(list)
-        //   dispatch('getTasks', listId)
-        // })
-        // })
       })
     },
     //Takes each list and gets task for it and pushes them to an array on the list

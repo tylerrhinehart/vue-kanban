@@ -10,4 +10,11 @@ var schema = new mongoose.Schema({
   collaborators: [{type: ObjectId, ref: models.user.name}]
 });
 
+schema.pre('remove', function(next) {
+    list.remove({boardId: this._id}).exec();
+    task.remove({boardId: this._id}).exec();
+    comment.remove({boardId: this._id}).exec();
+    next();
+});
+
 module.exports = mongoose.model(models.board.name, schema);

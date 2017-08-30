@@ -12,4 +12,9 @@ var schema = new mongoose.Schema({
     listId: { type: ObjectId, ref: models.list, required: true}
 });
 
+schema.pre('remove', function(next) {
+    comment.remove({taskId: this._id}).exec();
+    next();
+});
+
 module.exports = mongoose.model(models.task.name, schema);

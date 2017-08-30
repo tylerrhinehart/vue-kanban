@@ -11,4 +11,10 @@ var schema = new mongoose.Schema({
 	boardId: { type: ObjectId, ref: models.board, required: true }
 });
 
+schema.pre('remove', function(next) {
+    task.remove({listId: this._id}).exec();
+    comment.remove({listId: this._id}).exec();
+    next();
+});
+
 module.exports = mongoose.model(models.list.name, schema);

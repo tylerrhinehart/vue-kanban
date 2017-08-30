@@ -17,10 +17,13 @@
                             <span>Add Task</span>
                             <md-icon>add_circle</md-icon>
                         </md-menu-item>
-
                         <md-menu-item>
                             <span>Change name</span>
                             <md-icon>message</md-icon>
+                        </md-menu-item>
+                        <md-menu-item @click="removeList">
+                            <span>Remove List</span>
+                            <md-icon>remove_circle</md-icon>
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
@@ -62,8 +65,7 @@
         data() {
             return {
                 name: '',
-                description: '',
-                index: 0
+                description: ''
             }
         },
         components: {
@@ -74,6 +76,9 @@
             createTask() {
                 console.log('yipyip')
                 // this.$store.dispatch('createTask')
+            },
+            removeList() {
+                this.$store.dispatch('removeList', this.list._id)
             },
             openDialog(ref) {
                 this.$refs[ref].open();
@@ -99,7 +104,7 @@
             this.$store.dispatch('getTasks', this.list._id)
         },
         computed: {
-            tasks(){
+            tasks() {
                 return this.$store.state.tasks[this.list._id]
             }
         }
