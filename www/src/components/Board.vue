@@ -9,24 +9,40 @@
       <md-button class="md-primary" type="button" @click="addList">Add New List</md-button>
     </form>
     <div style="display: inline-block" v-for="list in lists">
-      <List :list="list"></List>
+      <!-- <List :list="list"></List> -->
+      <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+        <List :list="list"></List>
+      </draggable>
     </div>
   </div>
 </template>
 
 <script>
   import List from './List'
+  import draggable from 'vuedraggable'
   export default {
     name: 'board',
     data() {
       return {
-        listName: ''
+        listName: '',
+        editable: true,
+        isDragging: false,
+        delayedDragging: false
       }
     },
     components: {
-      List
+      List,
+      draggable
     },
     methods: {
+      orderList() {
+        this.list = this.list.sort((one, two) => { return one.order - two.order; })
+      },
+      onMove({ relatedContext, draggedContext }) {
+        const relatedElement = relatedContext.element;
+        const draggedElement = draggedContext.element;
+        return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+      },
       addList() {
         var list = {
           name: this.listName,
@@ -46,6 +62,14 @@
       //getlists
     },
     computed: {
+      dragOptions() {
+        return {
+          animation: 0,
+          group: 'description',
+          disabled: !this.editable,
+          ghostClass: 'ghost'
+        };
+      },
       board() {
         return this.$store.state.activeBoard
       },

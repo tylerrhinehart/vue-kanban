@@ -31,7 +31,10 @@
             <md-card-content>
                 Tasks will eventually go here
                 <md-list v-for="task in tasks">
-                    <task :task="task"></task>
+                    <!-- <task :task="task"></task> -->
+                    <draggable :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+                        <Task :task="task"></Task>
+                    </draggable>
                 </md-list>
             </md-card-content>
         </md-card>
@@ -60,6 +63,7 @@
 </template>
 <script>
     import Task from './Task'
+    import draggable from 'vuedraggable'
     export default {
         name: 'list',
         data() {
@@ -69,10 +73,19 @@
             }
         },
         components: {
-            Task
+            Task,
+            draggable
         },
         props: ['list'],
         methods: {
+            orderList() {
+                this.list = this.list.sort((one, two) => { return one.order - two.order; })
+            },
+            onMove({ relatedContext, draggedContext }) {
+                const relatedElement = relatedContext.element;
+                const draggedElement = draggedContext.element;
+                return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+            },
             createTask() {
                 console.log('yipyip')
                 // this.$store.dispatch('createTask')
@@ -104,6 +117,14 @@
             this.$store.dispatch('getTasks', this.list._id)
         },
         computed: {
+            dragOptions() {
+                return {
+                    animation: 0,
+                    group: 'description',
+                    disabled: !this.editable,
+                    ghostClass: 'ghost'
+                };
+            },
             tasks() {
                 return this.$store.state.tasks[this.list._id]
             }

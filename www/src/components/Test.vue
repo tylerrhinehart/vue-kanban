@@ -2,17 +2,13 @@
     <div class="fluid container">
         <div class="row">
             <div class="col-md-3" v-for="list in activeLists">
-                <draggable class="list-group" element="ul" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+                <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
                     {{list._id}}
                     <div v-for="task in tasks[list._id]">
                         <draggable :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
                             <Task :task="task"></Task>
                         </draggable>
                     </div>
-                    <!-- <li class="list-group-item" v-for="element in list" :key="element.order">
-                        <i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i>                        {{element.name}}
-                        <span class="badge">{{element.name}}</span>
-                    </li> -->
                 </draggable>
             </div>
             <div class="col-md-3">
@@ -115,20 +111,5 @@
 </script>
 
 <style>
-    .vddl-list,
-    .vddl-draggable {
-        position: relative;
-    }
 
-    .vddl-list {
-        min-height: 44px;
-    }
-
-    .vddl-dragging {
-        opacity: 0.7;
-    }
-
-    .vddl-dragging-source {
-        display: none;
-    }
 </style>

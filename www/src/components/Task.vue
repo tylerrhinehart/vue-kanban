@@ -1,29 +1,53 @@
 <template>
     <div>
-
-        <md-list-item>
-            <md-button class="md-icon-button md-list-action" @click="removeTask">
-                <md-icon>remove_circle</md-icon>
-            </md-button>
-            <div class="md-title">{{task.name}}</div>
-            <div class="md-subhead">{{task.description}}</div>
-        </md-list-item>
-
+        <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+            <md-list-item>
+                <md-button class="md-icon-button md-list-action" @click="removeTask">
+                    <md-icon>remove_circle</md-icon>
+                </md-button>
+                <div class="md-title">{{task.name}}</div>
+                <div class="md-subhead">{{task.description}}</div>
+            </md-list-item>
+        </draggable>
     </div>
 </template>
 <script>
+    import draggable from 'vuedraggable'
     export default {
         name: 'task',
         data() {
             return {
-
+                editable: true,
+                isDragging: false,
+                delayedDragging: false
             }
         },
         props: ['task'],
+        components: {
+            draggable
+        },
         methods: {
+            orderList() {
+                this.list = this.list.sort((one, two) => { return one.order - two.order; })
+            },
+            onMove({ relatedContext, draggedContext }) {
+                const relatedElement = relatedContext.element;
+                const draggedElement = draggedContext.element;
+                return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+            },
             removeTask() {
                 console.log(this.task._id)
                 this.$store.dispatch('removeTask', this.task._id)
+            }
+        },
+        computed: {
+            dragOptions() {
+                return {
+                    animation: 0,
+                    group: 'description',
+                    disabled: !this.editable,
+                    ghostClass: 'ghost'
+                }
             }
         }
     }
