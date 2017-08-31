@@ -8,18 +8,21 @@
     <div v-show="!loggedIn">
       <h3>Sign in to see your boards</h3>
     </div>
+    <Test></Test>
   </div>
 </template>
 
 <script>
   import Error from './components/Error'
   import Navbar from './components/NavBar'
+  import Test from './components/Test'
 
   export default {
     name: 'app',
     components: {
       Navbar,
-      Error
+      Error,
+      Test
     },
     computed: {
       loggedIn() {

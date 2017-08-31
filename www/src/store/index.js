@@ -24,7 +24,29 @@ var store = new vuex.Store({
     tasks: {},
     error: {},
     user: {},
-    loggedIn: false,
+    lists: {
+      A: [
+        {
+          "id": 1,
+          "label": "Item A1"
+        },
+        {
+          "id": 2,
+          "label": "Item A2"
+        },
+      ],
+      B: [
+        {
+          "id": 1,
+          "label": "Item B1"
+        },
+        {
+          "id": 2,
+          "label": "Item B2"
+        },
+      ]
+    },
+      loggedIn: false,
   },
   mutations: {
     setBoards(state, data) {
@@ -61,6 +83,12 @@ var store = new vuex.Store({
     clearBoard(state) {
       state.activeBoard = {}
       state.activeLists = []
+    },
+    insertItem(state, draggable) {
+      state.lists.splice(index, 0, item)
+    },
+    deleteItem(state, index) {
+      state.lists.splice(index, 1)
     },
     login(state, user) {
       state.user = user.data.data
@@ -154,6 +182,12 @@ var store = new vuex.Store({
       api.post('/lists/' + task.listId + '/tasks', task).then(task => {
         dispatch('getTasks', listId)
       })
+    },
+    insertItem({ commit, dispatch }, draggable) {
+      commit(insertItem, draggable)
+    },
+    deleteItem({ commit, dispatch }, index) {
+      commit(deleteItem, index)
     },
     clearBoard({ commit, dispatch }) {
       commit('clearBoard')
