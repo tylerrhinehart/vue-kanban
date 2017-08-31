@@ -8,7 +8,7 @@
     <div v-show="!loggedIn">
       <h3>Sign in to see your boards</h3>
     </div>
-    <Test></Test>
+    <!-- <Test></Test> -->
   </div>
 </template>
 

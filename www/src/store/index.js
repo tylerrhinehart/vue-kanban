@@ -22,6 +22,7 @@ var store = new vuex.Store({
     activeBoard: {},
     activeLists: [],
     tasks: {},
+    comments:{},
     error: {},
     user: {},
     lists: {
@@ -72,6 +73,10 @@ var store = new vuex.Store({
       console.log(list)
       // state.activeLists[listIndex].tasks.data.data.splice(findIndex(task), 1)
 
+    },
+    setComments(state, comments){
+      console.log(comments)
+      vue.set(state.comments, comments.taskId, comments.data)
     },
     setTasks(state, tasks) {
       vue.set(state.tasks, tasks.listId, tasks.data)
@@ -182,6 +187,18 @@ var store = new vuex.Store({
       api.put('tasks/' + obj.taskId, updatedTask).then(()=>{
         dispatch('getTasks', obj.listId)
         dispatch('getTasks', obj.previousListId)
+      })
+    },
+    createComment({commit, dispatch}, comment){
+      api.post('/tasks/' + comment.taskId + '/comments', comment).then(comment=>{
+        console.log(comment)
+        dispatch('getComments', comment.data.data.taskId)
+      })
+    },
+    getComments({commit, dispatch}, taskId){
+      api('/tasks/' + taskId + '/comments').then(comments=>{
+        comments.data.taskId = taskId
+        commit('setComments', comments.data)
       })
     },
     createTask({ commit, dispatch }, task) {

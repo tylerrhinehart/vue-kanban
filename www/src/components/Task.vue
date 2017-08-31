@@ -11,11 +11,14 @@
                     <md-button class="md-icon-button" md-menu-trigger>
                         <md-icon>more_vert</md-icon>
                     </md-button>
-                    <md-menu-content >
+                    <md-menu-content>
+                        <md-menu-item @click="openDialog('dialog1')">
+                            <span>Add Comment</span>
+                            <md-icon>add_circle</md-icon>
+                        </md-menu-item>
                         <div v-for="list in lists">
-
                             <md-menu-item @click="updateTask(list._id)">
-                                <span>Add To: {{list.name}}</span>
+                                <span>Move to: {{list.name}}</span>
                                 <md-icon>add_circle</md-icon>
                             </md-menu-item>
                         </div>
@@ -23,9 +26,32 @@
                 </md-menu>
             </md-list-item>
         </draggable>
+        <div>
+            <md-list-item v-for="comment in comments">
+                <Comment :comment="comment"></Comment>
+            </md-list-item>
+        </div>
+        <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
+            <md-dialog-title>Create New Comment</md-dialog-title>
+
+            <md-dialog-content>
+                <form>
+                    <md-input-container>
+                        <label>Comment</label>
+                        <md-input v-model="comment"></md-input>
+                    </md-input-container>
+                </form>
+            </md-dialog-content>
+
+            <md-dialog-actions>
+                <md-button class="md-primary" @click="cancelDialog('dialog1')">Cancel</md-button>
+                <md-button class="md-primary" @click="closeDialog('dialog1')">Create</md-button>
+            </md-dialog-actions>
+        </md-dialog>
     </div>
 </template>
 <script>
+    import Comment from './Comment'
     import draggable from 'vuedraggable'
     export default {
         name: 'task',
@@ -33,12 +59,14 @@
             return {
                 editable: true,
                 isDragging: false,
-                delayedDragging: false
+                delayedDragging: false,
+                comment: ''
             }
         },
         props: ['task'],
         components: {
-            draggable
+            draggable,
+            Comment
         },
         methods: {
             orderList() {
@@ -62,7 +90,31 @@
                     previousListId: this.task.listId
                 }
                 this.$store.dispatch('updateTask', obj)
+            },
+            createComment() {
+                this.$store.dispatch('createComment')
+            },
+            openDialog(ref) {
+                this.$refs[ref].open();
+            },
+            cancelDialog(ref) {
+                this.$refs[ref].close();
+            },
+            closeDialog(ref) {
+                var comment = {
+                    content: this.comment,
+                    boardId: this.$store.state.activeBoard._id,
+                    creatorId: this.$store.state.user._id,
+                    taskId: this.task._id
+                }
+                this.$refs[ref].close()
+                this.$store.dispatch('createComment', comment)
+                this.comment = ''
+
             }
+        },
+        mounted() {
+            this.$store.dispatch('getComments', this.task._id)
         },
         computed: {
             dragOptions() {
@@ -76,6 +128,9 @@
             lists() {
                 return this.$store.state.activeLists
 
+            },
+            comments() {
+                return this.$store.state.comments[this.task._id]
             }
 
         }
