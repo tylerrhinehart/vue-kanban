@@ -177,6 +177,13 @@ var store = new vuex.Store({
         dispatch('getTasks', task.data.data.listId)
       })
     },
+    updateTask({commit, dispatch}, obj){
+      var updatedTask = {listId: obj.listId}
+      api.put('tasks/' + obj.taskId, updatedTask).then(()=>{
+        dispatch('getTasks', obj.listId)
+        dispatch('getTasks', obj.previousListId)
+      })
+    },
     createTask({ commit, dispatch }, task) {
       var listId = task.listId
       api.post('/lists/' + task.listId + '/tasks', task).then(task => {
