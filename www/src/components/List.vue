@@ -1,6 +1,6 @@
 <template>
     <div>
-        <md-card>
+        <md-card class="card">
             <md-card-header>
                 <md-card-header-text>
                     <div class="md-title">{{list.name}}</div>
@@ -28,19 +28,13 @@
                     </md-menu-content>
                 </md-menu>
             </md-card-header>
-            <md-card-content>
+            <md-card-content class="dragArea content">
                 <draggable v-model="tasks" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
                     <md-list class="item" v-for="task in tasks">
                         <Task :task="task" :key="task.position"></Task>
                     </md-list>
+                    <div id="dummy-card" class="item"></div>
                 </draggable>
-                <!-- <vddl-list :horizontal="false">
-                    <vddl-draggable v-for="task in tasks" :key="task.position" :draggable="task" :index="task.position" :wrapper="tasks"
-                        effect-allowed="move">
-                        <Task :task="task"></Task>
-                    </vddl-draggable>
-                    <vddl-placeholder class="red">Custom placeholder</vddl-placeholder>
-                </vddl-list> -->
             </md-card-content>
         </md-card>
         <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
@@ -87,9 +81,12 @@
         props: ['list'],
         methods: {
             onMove(e, o) {
-                console.log('hell')
-                // const relatedElement = relatedContext.task;
-                // const draggedElement = draggedContext.task;
+                console.log(e)
+                const relatedElement = e.relatedContext.element;
+                const draggedElement = e.draggedContext.element;
+                draggedElement.previousListId = draggedElement.listId
+                draggedElement.listId = relatedElement.listId
+                this.$store.dispatch('moveTask', draggedElement)
                 // return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
             },
             removeList() {
@@ -134,7 +131,9 @@
                     return this.$store.state.tasks[this.list._id]
                 },
                 set(value) {
-                    console.log('set')
+                    console.log(value)
+                    // this.$store.dispatch('updateLists', value)
+                    this.$store.commit('setTasks', value)
                 }
             }
         }
@@ -142,3 +141,15 @@
     }
 
 </script>
+
+<style>
+    #dummy-card {
+        height: 20px;
+        width: 60px;
+        background-color: rgba(0, 0, 0, 0)
+    }
+    .card{
+        color: rgb(23, 145, 51);
+        background-color: red
+    }
+</style>

@@ -98,4 +98,5 @@
   #boards-page {
     text-align: center;
   }
+
 </style>

@@ -44,9 +44,18 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+    /* background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb") */
   }
 
   #id {
     margin-top: 20vh;
+  }
+  body {
+    background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb");
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: center;
+    background-size: cover
   }
 </style>

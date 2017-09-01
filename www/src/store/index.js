@@ -62,10 +62,7 @@ var store = new vuex.Store({
       vue.set(state.comments, comments.taskId, sortedComments)
     },
     setTasks(state, tasks) {
-      var sortedTasks = tasks.data.sort(function (a, b) {
-        return a.position - b.position
-      })
-      vue.set(state.tasks, tasks.listId, sortedTasks)
+      vue.set(state.tasks, tasks.listId, tasks.data)
     },
     clearLists(state) {
       state.activeLists = []
@@ -159,6 +156,9 @@ var store = new vuex.Store({
       api("/lists/" + listId + "/tasks")
         .then(tasks => {
           tasks.data.listId = listId
+          tasks.data.data.sort(function (a, b) {
+            return a.position - b.position
+          })
           commit('setTasks', tasks.data)
         })
     },
@@ -173,6 +173,17 @@ var store = new vuex.Store({
         dispatch('getTasks', obj.listId)
         dispatch('getTasks', obj.previousListId)
       })
+    },
+    moveTask({ commit, dispatch }, obj) {
+      console.log(obj)
+      var updatedTask = { listId: obj.listId, position: obj.position }
+      api.put('tasks/' + obj._id, updatedTask).then(() => {
+        dispatch('getTasks', obj.listId)
+        dispatch('getTasks', obj.previousListId)
+      })
+    },
+    updateLists({ commit, dispatch }, obj) {
+
     },
     createComment({ commit, dispatch }, comment) {
       api.post('/tasks/' + comment.taskId + '/comments', comment).then(comment => {

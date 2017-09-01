@@ -16,6 +16,19 @@ module.exports = {
         })
     }
   },
+  updateTask: {
+    path: '/tasks/:taskId',
+    reqType: 'put',
+    method(req, res, next) {
+      let action = 'Update task by taskID'
+      Tasks.findByIdAndUpdate(req.params.taskId, req.body)
+        .then(task => {
+          res.send(handleResponse(action, task))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   commentOnTask: {
     path: '/tasks/:taskId/comments',
     reqType: 'get',
