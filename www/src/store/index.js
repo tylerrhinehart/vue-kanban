@@ -25,28 +25,6 @@ var store = new vuex.Store({
     comments: {},
     error: {},
     user: {},
-    lists: {
-      A: [
-        {
-          "id": 1,
-          "label": "Item A1"
-        },
-        {
-          "id": 2,
-          "label": "Item A2"
-        },
-      ],
-      B: [
-        {
-          "id": 1,
-          "label": "Item B1"
-        },
-        {
-          "id": 2,
-          "label": "Item B2"
-        },
-      ]
-    },
     loggedIn: false,
   },
   mutations: {

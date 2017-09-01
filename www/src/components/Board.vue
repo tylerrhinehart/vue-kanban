@@ -47,7 +47,8 @@
         var list = {
           name: this.listName,
           creatorId: this.$store.state.user._id,
-          boardId: this.$route.params.id
+          boardId: this.$route.params.id,
+          position: this.$store.state.activeLists.length
         }
         this.$store.dispatch('addList', list)
         this.listName = ''
@@ -74,7 +75,9 @@
         return this.$store.state.activeBoard
       },
       lists() {
-        return this.$store.state.activeLists
+        return this.$store.state.activeLists.sort(function (a, b) {
+          return a.position - b.position
+        })
       }
     }
   }

@@ -86,10 +86,6 @@
                 const draggedElement = draggedContext.element;
                 return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
             },
-            createTask() {
-                console.log('yipyip')
-                // this.$store.dispatch('createTask')
-            },
             removeList() {
                 this.$store.dispatch('removeList', this.list._id)
             },
@@ -105,7 +101,8 @@
                     description: this.description,
                     boardId: this.$store.state.activeBoard._id,
                     listId: this.list._id,
-                    creatorId: this.$store.state.user._id
+                    creatorId: this.$store.state.user._id,
+                    position: this.$store.state.tasks[this.list._id].length
                 }
                 this.$refs[ref].close()
                 this.$store.dispatch('createTask', task)
@@ -126,7 +123,9 @@
                 };
             },
             tasks() {
-                return this.$store.state.tasks[this.list._id]
+                return this.$store.state.tasks[this.list._id].sort(function(a,b) {
+                    return a.position - b.position
+                })
             }
         }
 

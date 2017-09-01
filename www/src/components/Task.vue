@@ -109,7 +109,8 @@
                     content: this.comment,
                     boardId: this.$store.state.activeBoard._id,
                     creatorId: this.$store.state.user._id,
-                    taskId: this.task._id
+                    taskId: this.task._id,
+                    position: this.$store.state.comments[this.task._id].length
                 }
                 this.$refs[ref].close()
                 this.$store.dispatch('createComment', comment)
@@ -136,7 +137,9 @@
 
             },
             comments() {
-                return this.$store.state.comments[this.task._id]
+                return this.$store.state.comments[this.task._id].sort(function(a, b) {
+                    return a.position - b.position
+                })
             }
 
         }
