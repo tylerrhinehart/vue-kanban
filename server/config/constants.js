@@ -30,7 +30,7 @@ const models = {
   },
   comment: {
     name: 'Comment',
-    endpoint: 'comment',
+    endpoint: 'comments',
     // useCustomRoutes:true,
   }
 }

@@ -6,6 +6,9 @@
                     <md-icon>remove_circle</md-icon>
                 </md-button>
                 <div class="md-title">{{task.name}}</div>
+                <md-button @click="toggleComments" class="md-icon-button" md-menu-trigger>
+                    <md-icon>comment</md-icon>
+                </md-button>
                 <div class="md-subhead">{{task.description}}</div>
                 <md-menu md-size="4" md-direction="top right">
                     <md-button class="md-icon-button" md-menu-trigger>
@@ -26,7 +29,7 @@
                 </md-menu>
             </md-list-item>
         </draggable>
-        <div>
+        <div v-show="showComments">
             <md-list-item v-for="comment in comments">
                 <Comment :comment="comment"></Comment>
             </md-list-item>
@@ -60,7 +63,8 @@
                 editable: true,
                 isDragging: false,
                 delayedDragging: false,
-                comment: ''
+                comment: '',
+                showComments: false
             }
         },
         props: ['task'],
@@ -110,7 +114,9 @@
                 this.$refs[ref].close()
                 this.$store.dispatch('createComment', comment)
                 this.comment = ''
-
+            },
+            toggleComments() {
+                this.showComments = !this.showComments
             }
         },
         mounted() {

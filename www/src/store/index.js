@@ -22,7 +22,7 @@ var store = new vuex.Store({
     activeBoard: {},
     activeLists: [],
     tasks: {},
-    comments:{},
+    comments: {},
     error: {},
     user: {},
     lists: {
@@ -47,7 +47,7 @@ var store = new vuex.Store({
         },
       ]
     },
-      loggedIn: false,
+    loggedIn: false,
   },
   mutations: {
     setBoards(state, data) {
@@ -74,8 +74,7 @@ var store = new vuex.Store({
       // state.activeLists[listIndex].tasks.data.data.splice(findIndex(task), 1)
 
     },
-    setComments(state, comments){
-      console.log(comments)
+    setComments(state, comments) {
       vue.set(state.comments, comments.taskId, comments.data)
     },
     setTasks(state, tasks) {
@@ -182,23 +181,28 @@ var store = new vuex.Store({
         dispatch('getTasks', task.data.data.listId)
       })
     },
-    updateTask({commit, dispatch}, obj){
-      var updatedTask = {listId: obj.listId}
-      api.put('tasks/' + obj.taskId, updatedTask).then(()=>{
+    updateTask({ commit, dispatch }, obj) {
+      var updatedTask = { listId: obj.listId }
+      api.put('tasks/' + obj.taskId, updatedTask).then(() => {
         dispatch('getTasks', obj.listId)
         dispatch('getTasks', obj.previousListId)
       })
     },
-    createComment({commit, dispatch}, comment){
-      api.post('/tasks/' + comment.taskId + '/comments', comment).then(comment=>{
+    createComment({ commit, dispatch }, comment) {
+      api.post('/tasks/' + comment.taskId + '/comments', comment).then(comment => {
         console.log(comment)
         dispatch('getComments', comment.data.data.taskId)
       })
     },
-    getComments({commit, dispatch}, taskId){
-      api('/tasks/' + taskId + '/comments').then(comments=>{
+    getComments({ commit, dispatch }, taskId) {
+      api('/tasks/' + taskId + '/comments').then(comments => {
         comments.data.taskId = taskId
         commit('setComments', comments.data)
+      })
+    },
+    removeComment({ commit, dispatch }, id) {
+      api.delete('comments/' + id).then((comment) => {
+        dispatch('getComments', comment.data.data.taskId)
       })
     },
     createTask({ commit, dispatch }, task) {
