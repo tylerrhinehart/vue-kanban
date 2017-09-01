@@ -123,9 +123,7 @@
                 };
             },
             tasks() {
-                return this.$store.state.tasks[this.list._id].sort(function(a,b) {
-                    return a.position - b.position
-                })
+                return this.$store.state.tasks[this.list._id]
             }
         }
 

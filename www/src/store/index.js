@@ -38,7 +38,10 @@ var store = new vuex.Store({
       state.activeBoard = board
     },
     setLists(state, lists) {
-      state.activeLists = lists
+      var sortedLists = lists.sort(function (a, b) {
+        return a.position - b.position
+      })
+      state.activeLists = sortedLists
     },
     removeTask(state, task) {
       debugger
@@ -53,11 +56,16 @@ var store = new vuex.Store({
 
     },
     setComments(state, comments) {
-      vue.set(state.comments, comments.taskId, comments.data)
+      var sortedComments = comments.data.sort(function (a, b) {
+        return a.position - b.position
+      })
+      vue.set(state.comments, comments.taskId, sortedComments)
     },
     setTasks(state, tasks) {
-      vue.set(state.tasks, tasks.listId, tasks.data)
-      // state.tasks[tasks.listId] = tasks.data
+      var sortedTasks = tasks.data.sort(function (a, b) {
+        return a.position - b.position
+      })
+      vue.set(state.tasks, tasks.listId, sortedTasks)
     },
     clearLists(state) {
       state.activeLists = []
@@ -160,7 +168,7 @@ var store = new vuex.Store({
       })
     },
     updateTask({ commit, dispatch }, obj) {
-      var updatedTask = { listId: obj.listId }
+      var updatedTask = { listId: obj.listId, position: obj.position }
       api.put('tasks/' + obj.taskId, updatedTask).then(() => {
         dispatch('getTasks', obj.listId)
         dispatch('getTasks', obj.previousListId)

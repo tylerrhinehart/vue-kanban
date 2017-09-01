@@ -75,9 +75,7 @@
         return this.$store.state.activeBoard
       },
       lists() {
-        return this.$store.state.activeLists.sort(function (a, b) {
-          return a.position - b.position
-        })
+        return this.$store.state.activeLists
       }
     }
   }

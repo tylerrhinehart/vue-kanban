@@ -91,7 +91,8 @@
                 var obj = {
                     taskId: this.task._id,
                     listId: listId,
-                    previousListId: this.task.listId
+                    previousListId: this.task.listId,
+                    position: this.$store.state.tasks[listId].length
                 }
                 this.$store.dispatch('updateTask', obj)
             },
@@ -137,9 +138,7 @@
 
             },
             comments() {
-                return this.$store.state.comments[this.task._id].sort(function(a, b) {
-                    return a.position - b.position
-                })
+                return this.$store.state.comments[this.task._id]
             }
 
         }
