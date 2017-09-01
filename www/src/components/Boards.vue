@@ -1,19 +1,34 @@
 <template>
-  <div>
+  <div id="boards-page">
     <button @click="openDialog('dialog1')">New Board</button>
-    <ul>
-      <li v-for="board in boards">
-        <router-link :to="'/boards/'+board._id">{{board.name}}</router-link> <span @click="removeBoard(board)">x</span>
-        <md-button @click="removeBoard(board._id)">
-          <md-icon>remove_circle</md-icon>
-        </md-button>
-      </li>
-    </ul>
+    <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        <md-list class="md-double-line">
+          <div v-for="board in boards">
+            <md-list-item>
+              <!-- <router-link :to="'/boards/'+board._id">{{board.name}}</router-link>
+          <md-button @click="removeBoard(board._id)">
+            <md-icon>remove_circle</md-icon>
+          </md-button> -->
+
+              <div class="md-list-text-container">
+                <span><router-link :to="'/boards/'+board._id">{{board.name}}</router-link></span>
+                <span>{{board.creatorId}}</span>
+              </div>
+
+              <md-button @click="removeBoard(board._id)" class="md-icon-button md-list-action">
+                <md-icon>remove_circle</md-icon>
+              </md-button>
+            </md-list-item>
+          </div>
+        </md-list>
+      </div>
+    </div>
     <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
-      <md-dialog-title>Create New Account</md-dialog-title>
+      <md-dialog-title>Create New Board</md-dialog-title>
 
       <md-dialog-content>
-        <form>
+        <form @submit.prevent="closeDialog('dialog1')">
           <md-input-container>
             <label>Name</label>
             <md-input v-model="name"></md-input>
@@ -23,7 +38,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click="cancelDialog('dialog1')">Cancel</md-button>
-        <md-button class="md-primary" @click="closeDialog('dialog1')">Create</md-button>
+        <md-button class="md-primary" type="submit">Create</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -80,5 +95,7 @@
 </script>
 
 <style scoped>
-
+  #boards-page {
+    text-align: center;
+  }
 </style>
