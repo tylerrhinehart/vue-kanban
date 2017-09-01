@@ -1,8 +1,22 @@
 let Tasks = require('../models/task')
+let Lists = require('../models/list')
 
 
 
 module.exports = {
+  specificList: {
+    path: '/lists/:listId',
+    reqType: 'get',
+    method(req, res, next) {
+      let action = 'Find list by listID'
+      Lists.findById(req.params.listId)
+        .then(list => {
+          res.send(handleResponse(action, list))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   tasksOnTheList: {
     path: '/lists/:listId/tasks',
     reqType: 'get',

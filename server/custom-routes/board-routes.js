@@ -3,19 +3,32 @@ let Lists = require('../models/list')
 
 
 module.exports = {
-  listsOnBoards : {
-      path: '/boards/:boardId/lists',
-      reqType: 'get',
-      method(req, res, next) {
-        let action = 'Find Lists by BoardID'
-        Lists.find({ boardId: req.params.boardId })
-          .then(lists => {
-            res.send(handleResponse(action, lists))
-          }).catch(error => {
-            return next(handleResponse(action, null, error))
-          })
-      }
-  },  
+  specificBoard: {
+    path: '/boards/:boardId',
+    reqType: 'get',
+    method(req, res, next) {
+      let action = 'Find board by BoardID'
+      Boards.findById(req.params.boardId)
+        .then(board => {
+          res.send(handleResponse(action, board))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
+  listsOnBoards: {
+    path: '/boards/:boardId/lists',
+    reqType: 'get',
+    method(req, res, next) {
+      let action = 'Find Lists by BoardID'
+      Lists.find({ boardId: req.params.boardId })
+        .then(lists => {
+          res.send(handleResponse(action, lists))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   boardList: {
     path: '/boards/:boardId/lists',
     reqType: 'post',
