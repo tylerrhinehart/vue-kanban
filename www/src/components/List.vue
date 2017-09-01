@@ -29,13 +29,18 @@
                 </md-menu>
             </md-card-header>
             <md-card-content>
-                Tasks will eventually go here
-                <md-list v-for="task in tasks">
-                    <!-- <task :task="task"></task> -->
-                    <draggable :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+                <draggable v-model="tasks" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+                    <md-list class="item" v-for="task in tasks">
+                        <Task :task="task" :key="task.position"></Task>
+                    </md-list>
+                </draggable>
+                <!-- <vddl-list :horizontal="false">
+                    <vddl-draggable v-for="task in tasks" :key="task.position" :draggable="task" :index="task.position" :wrapper="tasks"
+                        effect-allowed="move">
                         <Task :task="task"></Task>
-                    </draggable>
-                </md-list>
+                    </vddl-draggable>
+                    <vddl-placeholder class="red">Custom placeholder</vddl-placeholder>
+                </vddl-list> -->
             </md-card-content>
         </md-card>
         <md-dialog md-open-from="#custom" md-close-to="#custom" ref="dialog1">
@@ -69,7 +74,10 @@
         data() {
             return {
                 name: '',
-                description: ''
+                description: '',
+                editable: true,
+                isDragging: false,
+                delayedDragging: false
             }
         },
         components: {
@@ -78,13 +86,11 @@
         },
         props: ['list'],
         methods: {
-            orderList() {
-                this.list = this.list.sort((one, two) => { return one.order - two.order; })
-            },
-            onMove({ relatedContext, draggedContext }) {
-                const relatedElement = relatedContext.element;
-                const draggedElement = draggedContext.element;
-                return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+            onMove(e, o) {
+                console.log('hell')
+                // const relatedElement = relatedContext.task;
+                // const draggedElement = draggedContext.task;
+                // return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
             },
             removeList() {
                 this.$store.dispatch('removeList', this.list._id)
@@ -119,11 +125,17 @@
                     animation: 0,
                     group: 'description',
                     disabled: !this.editable,
-                    ghostClass: 'ghost'
+                    ghostClass: 'ghost',
+                    draggable: '.item'
                 };
             },
-            tasks() {
-                return this.$store.state.tasks[this.list._id]
+            tasks: {
+                get() {
+                    return this.$store.state.tasks[this.list._id]
+                },
+                set(value) {
+                    console.log('set')
+                }
             }
         }
 

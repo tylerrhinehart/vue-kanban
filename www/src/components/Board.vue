@@ -9,10 +9,9 @@
       <md-button class="md-primary" type="button" @click="addList">Add New List</md-button>
     </form>
     <div style="display: inline-block" v-for="list in lists">
-      <!-- <List :list="list"></List> -->
-      <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+      <!-- <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false"> -->
         <List :list="list"></List>
-      </draggable>
+      <!-- </draggable> -->
     </div>
   </div>
 </template>

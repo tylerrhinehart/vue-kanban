@@ -1,6 +1,6 @@
 <template>
     <div>
-        <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="updateTask">
+        <!-- <draggable class="list-group" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="updateTask"> -->
             <md-list-item>
                 <md-button class="md-icon-button md-list-action" @click="removeTask">
                     <md-icon>remove_circle</md-icon>
@@ -28,7 +28,7 @@
                     </md-menu-content>
                 </md-menu>
             </md-list-item>
-        </draggable>
+        <!-- </draggable> -->
         <div v-show="showComments">
             <md-list-item v-for="comment in comments">
                 <Comment :comment="comment"></Comment>
