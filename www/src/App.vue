@@ -30,7 +30,7 @@
       },
     },
     mounted() {
-      this.$store.dispatch('getAuth')
+      this.$store.dispatch('getAuth');
     }
   }
 

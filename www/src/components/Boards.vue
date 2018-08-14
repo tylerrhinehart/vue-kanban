@@ -4,16 +4,11 @@
     <div class="row">
       <div class="col-xs-6 col-xs-offset-3">
         <md-list class="md-double-line">
-          <div v-for="board in boards">
+          <div v-for="(board, i) in boards" :key="i">
             <md-list-item>
-              <!-- <router-link :to="'/boards/'+board._id">{{board.name}}</router-link>
-          <md-button @click="removeBoard(board._id)">
-            <md-icon>remove_circle</md-icon>
-          </md-button> -->
 
               <div class="md-list-text-container">
                 <span><router-link :to="'/boards/'+board._id">{{board.name}}</router-link></span>
-                <span>{{board.creatorId}}</span>
               </div>
 
               <md-button @click="removeBoard(board._id)" class="md-icon-button md-list-action">

@@ -3,6 +3,24 @@ let Lists = require('../models/list')
 
 
 module.exports = {
+  createBoard: {
+    path: '/boards',
+    reqType: 'post',
+    method(req, res, next) {
+      let action = 'Create board'
+      let schema = require('../models/board')
+      let board = new schema(req.body)
+      board.creatorId = req.session.uid
+
+      board.save()
+        .then(data => {
+          return res.send(handleResponse(action, data))
+        })
+        .catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   specificBoard: {
     path: '/boards/:boardId',
     reqType: 'get',

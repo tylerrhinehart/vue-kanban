@@ -30,7 +30,7 @@
             </md-card-header>
             <md-card-content class="dragArea content">
                 <draggable v-model="tasks" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-                    <md-list class="item" v-for="task in tasks">
+                    <md-list class="item" v-for="(task, i) in tasks" :key="i">
                         <Task :task="task" :key="task.position"></Task>
                     </md-list>
                     <div id="dummy-card" class="item"></div>

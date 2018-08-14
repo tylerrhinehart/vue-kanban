@@ -85,10 +85,10 @@
                 this.email = ''
                 this.password = ''
             },
-            login() {
+            login(email = null, password = null) {
                 var user = {
-                    email: this.email,
-                    password: this.password
+                    email: email ? email : this.email,
+                    password: password ? password : this.password
                 }
                 this.$store.dispatch('login', user)
                 this.loggedIn = true
@@ -122,6 +122,11 @@
             signedIn() {
                 this.loggedIn = this.$store.state.loggedIn
                 return this.$store.state.loggedIn
+            }
+        },
+        mounted() {
+            if(!this.loggedIn) {
+                this.login('demo@example.com', 'password');
             }
         }
     }
