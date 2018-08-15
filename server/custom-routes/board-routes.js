@@ -34,6 +34,19 @@ module.exports = {
         })
     }
   },
+  removeBoard: {
+    path: '/boards/:boardId',
+    reqType: 'delete',
+    method(req, res, next) {
+      let action = 'Delete list by listID'
+      Boards.findByIdAndRemove(req.params.boardId)
+        .then(board => {
+          res.send(handleResponse(action, board))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   listsOnBoards: {
     path: '/boards/:boardId/lists',
     reqType: 'get',

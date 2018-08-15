@@ -13,49 +13,59 @@
 </template>
 
 <script>
-  import Error from './components/Error'
-  import Navbar from './components/NavBar'
-  import Test from './components/Test'
+import Error from "./components/Error";
+import Navbar from "./components/NavBar";
+import Test from "./components/Test";
 
-  export default {
-    name: 'app',
-    components: {
-      Navbar,
-      Error,
-      Test
-    },
-    computed: {
-      loggedIn() {
-        return this.$store.state.loggedIn
-      },
-    },
-    mounted() {
-      this.$store.dispatch('getAuth');
+export default {
+  name: "app",
+  components: {
+    Navbar,
+    Error,
+    Test
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.loggedIn;
     }
+  },
+  mounted() {
+    this.$store.dispatch("getAuth");
   }
-
+};
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-    /* background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb") */
-  }
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+  /* background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb") */
+}
 
-  #id {
-    margin-top: 20vh;
-  }
-  body {
-    background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb");
+#id {
+  margin-top: 20vh;
+}
+body {
+  /* background-image: url("https://images.pexels.com/photos/542608/pexels-photo-542608.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb");
     background-position-x: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     text-align: center;
-    background-size: cover
-  }
+    background-size: cover */
+  background-color: #fff;
+  background-image: linear-gradient(
+      90deg,
+      transparent 79px,
+      #abced4 79px,
+      #abced4 81px,
+      transparent 81px
+    ),
+    linear-gradient(#eee 0.1em, transparent 0.1em);
+  background-size: 100% 1.2em;
+  min-height: auto !important;
+}
 </style>
