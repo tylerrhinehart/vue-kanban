@@ -16,6 +16,19 @@ module.exports = {
         })
     }
   },
+  removeList: {
+    path: '/tasks/:taskId',
+    reqType: 'delete',
+    method(req, res, next) {
+      let action = 'Delete task by listID'
+      Tasks.findByIdAndRemove(req.params.taskId)
+        .then(task => {
+          res.send(handleResponse(action, task))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   updateTask: {
     path: '/tasks/:taskId',
     reqType: 'put',

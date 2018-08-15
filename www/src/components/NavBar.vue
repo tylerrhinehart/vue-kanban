@@ -10,7 +10,7 @@
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                         </button>
-                    <a class="navbar-brand" href="#">Tyler & Austin- Vue Kanban</a>
+                    <span class="navbar-brand"><router-link to="/boards">Kanban Boards</router-link></span>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <form v-show="!signedIn" class="navbar-form navbar-right" @submit.prevent="login">
@@ -21,8 +21,8 @@
                         <button type="submit" class="btn btn-default">Login</button>
                         <button type="button" class="btn btn-default" @click="openDialog('dialog1')">Signup</button>
                     </form>
-                    <div v-show="signedIn" class="nav navbar navbar-right">
-                        <h4 style="display: inline-block">Hello, {{user.name}}</h4>
+                    <div v-show="signedIn" class="nav navbar navbar-right logged-in">
+                        <h4 class="username" style="display: inline-block">Hello, {{user.name}}</h4>
                         <button type="button" class="btn btn-default" @click="logout">Logout</button>
                     </div>
                 </div>
@@ -85,10 +85,10 @@
                 this.email = ''
                 this.password = ''
             },
-            login() {
+            login(email = null, password = null) {
                 var user = {
-                    email: this.email,
-                    password: this.password
+                    email: email ? email : this.email,
+                    password: password ? password : this.password
                 }
                 this.$store.dispatch('login', user)
                 this.loggedIn = true
@@ -123,7 +123,23 @@
                 this.loggedIn = this.$store.state.loggedIn
                 return this.$store.state.loggedIn
             }
+        },
+        mounted() {
+            if(!this.loggedIn) {
+                this.login('demo@example.com', 'password');
+            }
         }
     }
 
 </script>
+
+<style scoped>
+    .navbar-form > div, .logged-in {
+        margin-bottom: 0;
+    }
+    
+    .username {
+        margin-right: 1rem;
+        margin-top: 1.5rem;
+    }
+</style>

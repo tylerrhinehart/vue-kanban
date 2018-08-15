@@ -3,12 +3,43 @@ let Lists = require('../models/list')
 
 
 module.exports = {
+  createBoard: {
+    path: '/boards',
+    reqType: 'post',
+    method(req, res, next) {
+      let action = 'Create board'
+      let schema = require('../models/board')
+      let board = new schema(req.body)
+      board.creatorId = req.session.uid
+
+      board.save()
+        .then(data => {
+          return res.send(handleResponse(action, data))
+        })
+        .catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   specificBoard: {
     path: '/boards/:boardId',
     reqType: 'get',
     method(req, res, next) {
       let action = 'Find board by BoardID'
       Boards.findById(req.params.boardId)
+        .then(board => {
+          res.send(handleResponse(action, board))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
+  removeBoard: {
+    path: '/boards/:boardId',
+    reqType: 'delete',
+    method(req, res, next) {
+      let action = 'Delete list by listID'
+      Boards.findByIdAndRemove(req.params.boardId)
         .then(board => {
           res.send(handleResponse(action, board))
         }).catch(error => {

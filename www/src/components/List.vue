@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="list">
         <md-card class="card">
             <md-card-header>
                 <md-card-header-text>
                     <div class="md-title">{{list.name}}</div>
-                    <div class="md-subhead">Description goes here</div>
+                    <div class="md-subhead">{{ list.description }}</div>
                 </md-card-header-text>
 
                 <md-menu md-size="4" md-direction="top right">
@@ -30,7 +30,7 @@
             </md-card-header>
             <md-card-content class="dragArea content">
                 <draggable v-model="tasks" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-                    <md-list class="item" v-for="task in tasks">
+                    <md-list class="item" v-for="(task, i) in tasks" :key="i">
                         <Task :task="task" :key="task.position"></Task>
                     </md-list>
                     <div id="dummy-card" class="item"></div>
@@ -110,6 +110,7 @@
                 this.$refs[ref].close()
                 this.$store.dispatch('createTask', task)
                 this.name = ''
+                this.description = ''
 
             }
         },
@@ -131,7 +132,7 @@
                     return this.$store.state.tasks[this.list._id]
                 },
                 set(value) {
-                    console.log(value)
+                    // console.log(value)
                     // this.$store.dispatch('updateLists', value)
                     this.$store.commit('setTasks', value)
                 }
@@ -143,13 +144,11 @@
 </script>
 
 <style>
-    #dummy-card {
-        height: 20px;
-        width: 60px;
-        background-color: rgba(0, 0, 0, 0)
+    .list {
+        margin: .5rem;
     }
+
     .card{
-        color: rgb(23, 145, 51);
-        background-color: red
+        color: #3f51b5;
     }
 </style>

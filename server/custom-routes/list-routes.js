@@ -17,6 +17,19 @@ module.exports = {
         })
     }
   },
+  removeList: {
+    path: '/lists/:listId',
+    reqType: 'delete',
+    method(req, res, next) {
+      let action = 'Delete list by listID'
+      Lists.findByIdAndRemove(req.params.listId)
+        .then(list => {
+          res.send(handleResponse(action, list))
+        }).catch(error => {
+          return next(handleResponse(action, null, error))
+        })
+    }
+  },
   tasksOnTheList: {
     path: '/lists/:listId/tasks',
     reqType: 'get',

@@ -1,19 +1,14 @@
 <template>
   <div id="boards-page">
-    <button @click="openDialog('dialog1')">New Board</button>
+    <md-button class="md-raised md-primary" @click="openDialog('dialog1')">New Board</md-button>
     <div class="row">
       <div class="col-xs-6 col-xs-offset-3">
-        <md-list class="md-double-line">
-          <div v-for="board in boards">
+        <md-list class="md-double-line boards-list">
+          <div v-for="(board, i) in boards" :key="i">
             <md-list-item>
-              <!-- <router-link :to="'/boards/'+board._id">{{board.name}}</router-link>
-          <md-button @click="removeBoard(board._id)">
-            <md-icon>remove_circle</md-icon>
-          </md-button> -->
 
               <div class="md-list-text-container">
                 <span><router-link :to="'/boards/'+board._id">{{board.name}}</router-link></span>
-                <span>{{board.creatorId}}</span>
               </div>
 
               <md-button @click="removeBoard(board._id)" class="md-icon-button md-list-action">
@@ -38,7 +33,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click="cancelDialog('dialog1')">Cancel</md-button>
-        <md-button class="md-primary" type="submit">Create</md-button>
+        <md-button class="md-primary" type="click" @click.prevent="closeDialog('dialog1')">Create</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -97,6 +92,15 @@
 <style scoped>
   #boards-page {
     text-align: center;
+  }
+
+  .boards-list {
+    background: unset !important;
+  }
+
+  .boards-list > div {
+    background-color: #e3e3e3;
+    margin: .5rem 0;
   }
 
 </style>

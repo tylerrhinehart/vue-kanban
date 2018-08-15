@@ -90,7 +90,6 @@ var store = new vuex.Store({
     }
   },
   actions: {
-    //when writing your auth routes (login, logout, register) be sure to use auth instead of api for the posts
     //Gets all boards given userId
     getBoards({ commit, dispatch }) {
       api('userboards')
@@ -114,8 +113,9 @@ var store = new vuex.Store({
     },
     //Creates new board
     createBoard({ commit, dispatch }, board) {
-      api.post('boards/', board)
+      api.post('boards', board)
         .then(res => {
+          console.log(res)
           dispatch('getBoards')
         })
         .catch(err => {
@@ -175,7 +175,6 @@ var store = new vuex.Store({
       })
     },
     moveTask({ commit, dispatch }, obj) {
-      console.log(obj)
       var updatedTask = { listId: obj.listId, position: obj.position }
       api.put('tasks/' + obj._id, updatedTask).then(() => {
         dispatch('getTasks', obj.listId)
@@ -187,7 +186,6 @@ var store = new vuex.Store({
     },
     createComment({ commit, dispatch }, comment) {
       api.post('/tasks/' + comment.taskId + '/comments', comment).then(comment => {
-        console.log(comment)
         dispatch('getComments', comment.data.data.taskId)
       })
     },
